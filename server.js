@@ -526,6 +526,41 @@ app.post("/order/:id/:rid", (req, res) => {
     });
 });
 
+app.get("/vieworder/orderitem/:rid/", (req, res) => {
+  const { rid } = req.params;
+  db.select("*")
+    .where({
+      restaurant_id: rid
+    })
+    .from("orderitem")
+    .then(item => {
+      if (item.length) {
+        res.json(item);
+      } else {
+        res.status(400).json("Not found");
+      }
+    })
+    .catch(err => res.status(400).json("Error getting order's"));
+});
+
+app.get("/vieworder/dishes/:rid/:cid", (req, res) => {
+  const { rid, cid } = req.params;
+  db.select("*")
+    .where({
+      restaurant_id: rid,
+      customer_id: cid
+    })
+    .from("additem")
+    .then(item => {
+      if (item.length) {
+        res.json(item);
+      } else {
+        res.status(400).json("Not found");
+      }
+    })
+    .catch(err => res.status(400).json("Error getting dishes"));
+});
+
 app.listen(3000, () => {
   console.log("app is running on port 3000");
 });
