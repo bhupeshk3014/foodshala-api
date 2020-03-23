@@ -128,21 +128,21 @@ app.post("/register/customer", (req, res) => {
                     // res.json(customer[0]);
                   })
                   .catch(err => {
-                    res.status(400).json("Unable to register");
+                    res.status(400).json("Unable to register 1");
                   });
               })
               .then(trx.commit)
               .catch(trx.rollback);
           })
           .catch(err => {
-            res.status(400).json("Unable to register");
+            res.status(400).json("Unable to register 2");
           });
       })
       .catch(err => {
-        res.status(400).json("Unable to register");
+        res.status(400).json("Unable to register 3");
       });
   }).catch(err => {
-    res.status(400).json("Unable to register");
+    res.status(400).json("Unable to register 4");
   });
 });
 
