@@ -137,7 +137,7 @@ app.post("/register/customer", (req, res) => {
           .catch(trx.rollback);
       })
       .catch(err => {
-        res.status(400).json("Unable to register 2");
+        res.status(400).json(err);
       });
     //})
     // .catch(err => {
