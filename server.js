@@ -4,9 +4,9 @@ const cors = require("cors");
 const knex = require("knex");
 
 const db = knex({
-  client: "mysql",
+  client: "pg",
   connection: {
-    host: "127.0.0.1",
+    host: "postgresql-defined-48926",
     user: "root",
     password: "B@9582kumar",
     database: "foodshala"
@@ -292,7 +292,7 @@ app.post("/additem/:id/starter", (req, res) => {
 
   db("starter")
     .insert({
-      id: id,
+      item_id: id,
       dish: dish,
       type: type,
       price: price
@@ -319,7 +319,7 @@ app.post("/additem/:id/maincourse", (req, res) => {
 
   db("maincourse")
     .insert({
-      id: id,
+      item_id: id,
       dish: dish,
       type: type,
       price: price
@@ -346,7 +346,7 @@ app.post("/additem/:id/beverages", (req, res) => {
 
   db("beverages")
     .insert({
-      id: id,
+      item_id: id,
       dish: dish,
       price: price
     })
@@ -370,7 +370,7 @@ app.post("/addtocart/:cid/:rid", (req, res) => {
       customer_id: cid,
       restaurant_id: rid,
       dish: dish,
-      type: type,
+      tod: type,
       price: price
     })
     .then(response => {
