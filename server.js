@@ -197,6 +197,10 @@ app.get("/restaurant", (req, res) => {
 });
 
 app.post("/signin/customer", (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json("incorrect form submission");
+  }
   db.select("email", "hash")
     .from("customerLogin")
     .where("email", "=", req.body.email)
@@ -221,6 +225,11 @@ app.post("/signin/customer", (req, res) => {
 });
 
 app.post("/signin/register", (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).json("incorrect form submission");
+  }
   db.select("email", "hash")
     .from("restaurantLogin")
     .where("email", "=", req.body.email)
@@ -246,6 +255,10 @@ app.post("/signin/register", (req, res) => {
 
 app.post("/register/customer", (req, res) => {
   const { name, email, password, address, pnumber, preference } = req.body;
+
+  if (!name || !email || !password || !address || !pnumber || !preference) {
+    return res.status(400).json("incorrect form submission");
+  }
 
   const hash = bcrypt.hashSync(password);
 
@@ -310,6 +323,21 @@ app.post("/register/restaurant", (req, res) => {
     tfrom,
     tto
   } = req.body;
+
+  if (
+    !name ||
+    !email ||
+    !rname ||
+    !password ||
+    !address ||
+    !pnumber ||
+    !cuisines ||
+    !cf2 ||
+    !tfrom ||
+    !tto
+  ) {
+    return res.status(400).json("incorrect form submission");
+  }
 
   const hash = bcrypt.hashSync(password);
 
@@ -419,6 +447,11 @@ app.get("/menu/:id/beverages", (req, res) => {
 app.post("/additem/:id/starter", (req, res) => {
   const { id } = req.params;
   const { dish, type, price } = req.body;
+
+  if (!dish || !type || !price) {
+    return res.status(400).json("incorrect form submission");
+  }
+
   db("starter")
     .insert({
       id: id,
@@ -430,7 +463,7 @@ app.post("/additem/:id/starter", (req, res) => {
       db("starter")
         .where("starter_id", response)
         .then(starter => {
-          res.json(starter[0]);
+          res.json("success");
         });
     })
     .catch(err => {
@@ -441,6 +474,11 @@ app.post("/additem/:id/starter", (req, res) => {
 app.post("/additem/:id/maincourse", (req, res) => {
   const { id } = req.params;
   const { dish, type, price } = req.body;
+
+  if (!dish || !type || !price) {
+    return res.status(400).json("incorrect form submission");
+  }
+
   db("maincourse")
     .insert({
       id: id,
@@ -452,7 +490,7 @@ app.post("/additem/:id/maincourse", (req, res) => {
       db("maincourse")
         .where("maincourse_id", response)
         .then(maincourse => {
-          res.json(maincourse[0]);
+          res.json("success");
         });
     })
     .catch(err => {
@@ -463,6 +501,11 @@ app.post("/additem/:id/maincourse", (req, res) => {
 app.post("/additem/:id/beverages", (req, res) => {
   const { id } = req.params;
   const { dish, price } = req.body;
+
+  if (!dish || !price) {
+    return res.status(400).json("incorrect form submission");
+  }
+
   db("beverages")
     .insert({
       id: id,
@@ -473,7 +516,7 @@ app.post("/additem/:id/beverages", (req, res) => {
       db("beverages")
         .where("beverages_id", response)
         .then(beverages => {
-          res.json(beverages[0]);
+          res.json("success");
         });
     })
     .catch(err => {
