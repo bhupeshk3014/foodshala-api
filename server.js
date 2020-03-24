@@ -115,7 +115,7 @@ app.post("/register/customer", (req, res) => {
           .returning("*")
           .insert({
             name: name,
-            email: email,
+            email: loginEmail[0],
             address: address,
             pnumber: pnumber,
             preference: preference,
