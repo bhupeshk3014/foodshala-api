@@ -105,44 +105,44 @@ app.post("/register/customer", (req, res) => {
         email: email
       })
       .into("customerLogin")
-      .returning("email")
-      // .then(resp => {
-      //   db("customer")
-      //     .where({ customer_id: resp })
-      //     .select("email")
-      .then(loginEmail => {
-        return trx("customer")
-          .returning("*")
-          .insert({
-            name: name,
-            email: loginEmail[0],
-            address: address,
-            pnumber: pnumber,
-            preference: preference,
-            joined: new Date()
+      // .returning("email")
+      .then(resp => {
+        db("customer")
+          .where({ customer_id: resp })
+          .select("email")
+          .then(loginEmail => {
+            return trx("customer")
+              .returning("*")
+              .insert({
+                name: name,
+                email: loginEmail[0],
+                address: address,
+                pnumber: pnumber,
+                preference: preference,
+                joined: new Date()
+              })
+              .then(response => {
+                db("customer")
+                  .where("customer_id", response)
+                  .then(customer => {
+                    //console.log(customer);
+                    res.json("success");
+                    // res.json(customer[0]);
+                  })
+                  .catch(err => {
+                    res.status(400).json(err);
+                  });
+              })
+              .then(trx.commit)
+              .catch(trx.rollback);
           })
-          .then(response => {
-            // db("customer")
-            //   .where("customer_id", response)
-            // .then(customer => {
-            //console.log(customer);
-            res.json("success");
-            // res.json(customer[0]);
-            // })
-            // .catch(err => {
-            //   res.status(400).json("Unable to register 1");
-            // });
-          })
-          .then(trx.commit)
-          .catch(trx.rollback);
+          .catch(err => {
+            res.status(400).json(err);
+          });
       })
       .catch(err => {
         res.status(400).json(err);
       });
-    //})
-    // .catch(err => {
-    //   res.status(400).json("Unable to register 3");
-    // });
   }).catch(err => {
     res.status(400).json("Unable to register 4");
   });
